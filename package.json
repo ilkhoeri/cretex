@@ -1,0 +1,70 @@
+{
+  "name": "cretex",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "Dynamically utility for combining different types of values ​​into a single value.",
+  "author": "Ilham Khoeri <ilkhoeri@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/ilkhoeri/cretex/issues"
+  },
+  "homepage": "https://github.com/ilkhoeri/cretex#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ilkhoeri/cretex.git"
+  },
+  "peerDependencies": {
+    "tailwind-merge": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "chalk": "^5.4.1",
+    "prettier": "^3.3.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  },
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "string",
+    "variant",
+    "class-variant",
+    "object-variant",
+    "classes",
+    "className",
+    "classNames",
+    "classList",
+    "twMerge",
+    "clsx",
+    "cva",
+    "css",
+    "react",
+    "size",
+    "converter"
+  ],
+  "scripts": {
+    "build": "bun run namespace:rewrite && bun run build:tsup && bun run namespace:remove",
+    "build:tsup": "tsup",
+    "build:tsc": "tsc --project tsconfig.json",
+    "namespace:rewrite": "bun run ./script/rewrite-namespace.ts && bun run format:write",
+    "namespace:remove": "bun run ./script/remove-namespace.ts",
+    "format:write": "prettier --write src",
+    "format:check": "prettier --check src",
+    "lint": "eslint src --cache",
+    "format": "prettier src",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run lint && npm run format:check && npm run typecheck"
+  },
+  "sideEffects": false
+}
