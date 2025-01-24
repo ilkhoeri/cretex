@@ -1,22 +1,14 @@
 {
+  "extends": "./configs/tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2020", "DOM"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "target": "ES2020",
+    "outDir": "./lib",
     "module": "ESNext",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
+    "declarationDir": "./lib/types",
     "declaration": true,
-    "declarationDir": "./dist/types",
-    "skipLibCheck": true,
-    "removeComments": true, // Hilangkan komentar untuk hasil yang lebih kecil
-    "sourceMap": true, // Tambahkan sourcemap untuk debugging
-    "inlineSources": true, // Sertakan source dalam sourcemap
+    "sourceMap": true,
+    "inlineSources": true,
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": false
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "src/**/*.test.ts", "src/tests/**"]
+  "exclude": ["node_modules", "lib", "__tests__", "src/**/*.test.ts", "src/tests/**"]
 }

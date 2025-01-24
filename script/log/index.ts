@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { ansiColors } from './ansi';
 
 function getEnv() {
   if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV) {
@@ -33,5 +34,41 @@ const log = Object.assign(
     }
   }
 );
+
+type Color = keyof typeof ansiColors.color;
+type Effect = keyof typeof ansiColors.effect;
+type StyledLogger = {
+  (text: string): string;
+} & {
+  [key in Effect]: StyledLogger;
+};
+
+type CK = {
+  [key in Color]: StyledLogger;
+};
+
+const createStyledLogger = (color?: Color, effect?: Effect) => {
+  const colorCode = color ? ansiColors.color[color] : '';
+  const effectCode = effect ? ansiColors.effect[effect] : '';
+  const resetCode = '\x1b[0m';
+
+  return (text: string) => {
+    return `${effectCode}${colorCode}${text}${resetCode}`;
+  };
+};
+
+export const ck = Object.keys(ansiColors.color).reduce((acc, color) => {
+  acc[color] = (text: string) => createStyledLogger(color as Color)(text);
+  return acc;
+}, {} as CK);
+
+Object.keys(ansiColors.effect).forEach(effect => {
+  Object.keys(ansiColors.color).forEach(color => {
+    const colorFn = ck[color as keyof typeof ansiColors.color];
+    const effectFn = (text: string) => createStyledLogger(color as Color, effect as Effect)(text);
+    // @ts-ignore
+    ck[color as keyof typeof ansiColors.color][effect as Effect] = effectFn;
+  });
+});
 
 export default log;

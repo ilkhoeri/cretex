@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { cnx, type cnxValues } from './cnx';
+import { cnx, type cnxValues } from './cnx.ts';
 
 export function merge(...merge: cnxValues[]) {
   return twMerge(cnx(...merge));
