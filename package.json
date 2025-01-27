@@ -4,6 +4,9 @@
   "license": "MIT",
   "description": "Dynamically utility for combining different types of values ​​into a single value.",
   "author": "Ilham Khoeri <ilkhoeri@gmail.com>",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "bugs": {
     "url": "https://github.com/ilkhoeri/cretex/issues"
   },

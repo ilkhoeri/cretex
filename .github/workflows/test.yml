@@ -1,0 +1,70 @@
+name: test
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["latest"]
+        typescript: ["5.0", "latest"]
+    name: Test with TypeScript ${{ matrix.typescript }} on Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: bun install
+      - run: bun add typescript@${{ matrix.typescript }}
+      - run: bun run build
+      - run: bun test
+
+  test-deno:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno: ["v1.x"]
+    name: Test with Deno ${{ matrix.deno }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno }}
+      - run: bun install
+      - run: bun build:deno
+      - run: deno --version
+      - run: deno test
+        working-directory: ./deno/lib
+      - run: deno run ./index.ts
+        working-directory: ./deno/lib
+      - run: deno run ./mod.ts
+        working-directory: ./deno/lib
+      - run: |
+          deno bundle ./mod.ts ./bundle.js
+          deno run ./bundle.js
+        working-directory: ./deno/lib
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["latest"]
+    name: Lint on Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: bun install
+      - run: bun prettier:check
+      - run: bun lint:check

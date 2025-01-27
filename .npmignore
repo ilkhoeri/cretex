@@ -47,3 +47,7 @@ eslint.config.js
 ./*/jest.config.*
 jest.config.*
 .editorconfig
+npmrc
+.npmrc
+index.html
+./index.html
