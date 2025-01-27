@@ -16,6 +16,5 @@
     "downlevelIteration": true,
     "isolatedModules": true
   },
-  "include": ["../src/**/*", "../playground.ts", "../.eslintrc.js"]
+  "include": ["../src/**/*", "../playground.ts", "../eslint.config.js"]
 }
-

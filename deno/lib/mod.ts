@@ -1,2 +1,2 @@
 export * from "./index.ts";
-export { default as default } from "./index.ts";
+export { x as default } from "./index.ts";

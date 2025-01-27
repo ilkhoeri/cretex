@@ -116,6 +116,7 @@
     "test:jest": "jest --coverage",
     "test:swc": "npx jest --config ./configs/swc-jest.config.json",
     "test:deno": "cd deno && deno test",
+    "prepublishOnly": "npm run test && npm run build && npm run build:deno",
     "prepare:test": "husky .husky/pre-publish \"bun test\"",
     "prepare": "husky",
     "lint": "eslint src --cache",

@@ -10,7 +10,6 @@ module.exports = {
     'import/no-unresolved': 0,
     'import/no-duplicates': 1,
 
-    '@typescript-eslint/no-var-requires': 'off',
     'prettier/prettier': ['error'],
 
     /**
@@ -23,6 +22,7 @@ module.exports = {
     /**
      * @typescript-eslint/eslint-plugin @see https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin
      */
+    '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',

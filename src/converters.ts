@@ -1,5 +1,5 @@
-export const rem = createConverter('rem', { shouldScale: true });
-export const em = createConverter('em');
+export const rem: (value: unknown) => string = createConverter('rem', { shouldScale: true });
+export const em: (value: unknown) => string = createConverter('em');
 
 export function px(value: unknown): string | number {
   const transformedValue = getTransformedScaledValue(value);
@@ -26,7 +26,7 @@ export function px(value: unknown): string | number {
   return NaN;
 }
 
-export function createConverter(units: string, { shouldScale = false } = {}) {
+export function createConverter(units: string, { shouldScale = false } = {}): (value: unknown) => string {
   function converter(value: unknown): string {
     if (value === 0 || value === '0') return `0${units}`;
 
@@ -79,7 +79,7 @@ function scaleRem(value: string): string {
   return value;
 }
 
-function getTransformedScaledValue(value: unknown) {
+function getTransformedScaledValue(value: unknown): unknown {
   if (typeof value !== 'string' || !/var\(--.*?scale\)/.test(value)) {
     return value;
   }

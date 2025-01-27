@@ -39,7 +39,7 @@ playground.*
 .gitignoresrc/
 *.ts
 *.config.*
-*.eslint*
+*eslint*
 .eslintcache
 .eslintignore
 .eslintrc

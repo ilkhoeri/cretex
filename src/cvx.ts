@@ -13,7 +13,7 @@ export interface cvxRecord<T extends cvxKeys> {
   defaultVariants?: cvxResult<T>;
 }
 
-export function cvx<T extends cvxKeys>(keys: cvxRecord<T>) {
+export function cvx<T extends cvxKeys>(keys: cvxRecord<T>): (result?: cvxResult<T>) => string {
   return (result: cvxResult<T> = {}) => {
     const mergedVariant = { ...keys.defaultVariants, ...result } as {
       [K in keyof T]?: keyof T[K];
