@@ -1,4 +1,4 @@
-# cretex
+# **cretex**
 
 Dynamically utility for combining different types of values ​​into a single value.
 
@@ -16,29 +16,29 @@ This function is very useful for building style configurations or other properti
 
 using [npm](https://www.npmjs.com/package/cretex)
 
-```cirru
+```bash
 npm install cretex
 ```
 
 using [bun](https://bun.sh/docs/cli/add)
 
-```cirru
+```bash
 bun add cretex
 ```
 
 using [pnpm](https://pnpm.io/cli/add)
 
-```cirru
+```bash
 pnpm add cretex
 ```
 
 using [yarn](https://classic.yarnpkg.com/en/package/cretex)
 
-```cirru
+```bash
 yarn add cretex
 ```
 
-# cnx
+# **cnx**
 
 The cnx function is a utility to dynamically combine string class names based on various input types, such as strings, numbers, objects, arrays, or functions.
 This function combines various input types and simplifies complex management by producing clean and valid strings.
@@ -174,7 +174,7 @@ import { merge } from 'cretex';
 
 ---
 
-# cvx
+# **cvx**
 
 The cvx function is a utility for managing string class variants in a structured manner.
 It allows combining classes based on a predefined variant configuration, with the option to include default values ​​(`defaultVariants`) and customization based on user input.
@@ -240,7 +240,9 @@ const classes = cvx({
     size: 'lg'
   }
 });
+```
 
+```tsx
 type VariantsType = cvxProps<typeof classes>;
 interface StylesProps extends VariantsType {
   unstyled?: boolean;
@@ -250,7 +252,9 @@ export function getStyles(props: StylesProps) {
   const { className, unstyled, ...rest } = props;
   return { className: twMerge(!unstyled && classes({ ...rest }), className) };
 }
+```
 
+```tsx
 export function CvxDemo(props: StylesProps) {
   const { className, color, size, variant, unstyled } = props;
   return (
@@ -298,7 +302,7 @@ If you are using the vscode editor, enable autocomplete for the [`tailwindcss`](
 
 ---
 
-# ocx
+# **ocx**
 
 The ocx function is a utility for combining different types of values ​​into a single object. This function is very useful for building style configurations or other properties dynamically by simplifying flexible management based on runtime conditions.
 It can accept various input types, such as objects, arrays, functions, or primitive values, and returns an object that combines all relevant properties.
@@ -365,18 +369,18 @@ ocx<React.CSSProperties>([
 
 ---
 
-# rem - em
+# **rem - em**
 
 rem and em functions are converters for changing values ​​in various formats into values ​​with rem or em units.
 
-## Sintaks:
+## Syntax
 
 ```ts
 const rem: (value: unknown) => string;
 const em: (value: unknown) => string;
 ```
 
-### Parameters:
+### Parameters
 
 - `value` (unknown): The value to convert. Can be a number, string, or supported expression (e.g. `calc`, `clamp`).
 - Returns: A string containing a value in rem or em units.
@@ -404,17 +408,17 @@ rem('calc(100% - 10px)');
 
 ---
 
-# px
+# **px**
 
 The px function is used to convert a value to pixels or get a numeric value from a string in pixels, rems, or ems.
 
-## Syntax:
+## Syntax
 
 ```ts
 function px(value: unknown): string | number;
 ```
 
-### Parameters:
+### Parameters
 
 - `value` (unknown): The value to convert. Can be a number or a string.
 - Returns:
@@ -441,17 +445,17 @@ px('calc(100% - 10px)');
 // Output: "calc(100% - 10px)"
 ```
 
-# createConverter
+# **createConverter**
 
 This function is a utility to create a custom converter with specific units. For example, rem and em are created using this function.
 
-## Syntax:
+## Syntax
 
 ```ts
 function createConverter(units: string, { shouldScale }?: { shouldScale?: boolean | undefined }): (value: unknown) => string;
 ```
 
-### Parameters:
+### Parameters
 
 - `units` (string): The units used by the converter (e.g. `rem`, `em`).
 - `options` (object) (optional):
@@ -459,7 +463,7 @@ function createConverter(units: string, { shouldScale }?: { shouldScale?: boolea
 - Returns:
   A converter function that accepts a value to convert to the specified units.
 
-## Example of Usage:
+## Example of Usage
 
 ```ts
 const pt = createConverter('pt');
@@ -478,11 +482,13 @@ pt(16);
 
 ---
 
-## **Important: Using Named and Default Exports Together**
+# **Exported**
+
+## Using Named and Default Exports Together
 
 Our library provides both **named exports** and a **default export** to give you flexibility when importing and using its features. However, when using both export styles together in a project, there are important considerations due to differences in how module systems handle these exports, especially if you're working with different module formats like **ES Modules (ESM)** and **CommonJS (CJS)**.
 
-### **For ES Modules Users**
+## **For ES Modules Users**
 
 If you're using an ESM-based environment (e.g., modern browsers, `node` with `"type": "module"`, or build tools like Vite, Webpack, or Rollup with ESM configuration), you can import the library as follows:
 
@@ -515,7 +521,7 @@ If you're using an ESM-based environment (e.g., modern browsers, `node` with `"t
    cnx(); // Access directly as a named export
    ```
 
-### **For CommonJS Users**
+## **For CommonJS Users**
 
 If you're working in a CommonJS environment (e.g., Node.js with `"type": "commonjs"`), the behavior of default exports changes slightly:
 
@@ -538,27 +544,27 @@ If you're working in a CommonJS environment (e.g., Node.js with `"type": "common
    twMerge();
    ```
 
-### **Why This Behavior?**
+**Why This Behavior?**
 
 This behavior arises because CommonJS and ES Modules have different mechanisms for handling default exports:
 
 - In ES Modules, the `default` export is directly accessible.
 - In CommonJS, `default` exports are wrapped in an object (`module.exports`), requiring access via `.default`.
 
-### **How We Recommend Using This Library**
+## **How We Recommend Using This Library**
 
 To minimize confusion and ensure compatibility:
 
 - Prefer using **named exports** for better clarity and tree-shaking in ESM.
 - Use the **default export** when you need a single namespace object to organize all features of the library.
 
-### **Targeting ES2020**
+## **Targeting ES2020**
 
 This library is compiled with **`target: es2020`**, meaning it utilizes modern JavaScript features. Ensure that your environment or build tools support ES2020 syntax or transpile the code if necessary.
 
 ---
 
-## Example Table of Imports
+**Example Table of Imports**
 
 | **Use Case**                | **ESM Import Syntax**                    | **CJS Import Syntax**                                                                   |
 | --------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------- |
