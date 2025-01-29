@@ -1,9 +1,65 @@
 // @ts-ignore TS6133
-import { expect, test } from '@jest/globals';
+import { describe, test, expect, it } from '@jest/globals';
 
 import { cvx } from '../src'; // Named export
 import x from '../src/index'; // Default export alias
 import * as cretex from '../src/index'; // Test for namespace imports
+
+describe('cvx', () => {
+  it('should use defaultVariants if result does not include key', () => {
+    const fn = cvx({
+      assign: 'base-class',
+      variants: {
+        color: { primary: 'text-blue', secondary: 'text-green' },
+        size: { large: 'text-lg', small: 'text-sm' }
+      },
+      defaultVariants: {
+        color: 'primary'
+      }
+    });
+    expect(fn()).toBe('base-class text-blue');
+  });
+
+  it('should merge result with defaultVariants', () => {
+    const fn = cvx({
+      assign: 'base-class',
+      variants: {
+        color: { primary: 'text-blue', secondary: 'text-green' },
+        size: { large: 'text-lg', small: 'text-sm' }
+      },
+      defaultVariants: {
+        color: 'primary'
+      }
+    });
+    expect(fn({ size: 'large' })).toBe('base-class text-blue text-lg');
+  });
+
+  it('should prioritize result over defaultVariants', () => {
+    const fn = cvx({
+      assign: 'base-class',
+      variants: {
+        color: { primary: 'text-blue', secondary: 'text-green' },
+        size: { large: 'text-lg', small: 'text-sm' }
+      },
+      defaultVariants: {
+        color: 'primary'
+      }
+    });
+    expect(fn({ color: 'secondary', size: 'small' })).toBe('base-class text-green text-sm');
+  });
+
+  it('should handle missing defaultVariants gracefully', () => {
+    const keysWithoutDefaults = {
+      assign: 'base-class',
+      variants: {
+        color: { primary: 'text-blue', secondary: 'text-green' },
+        size: { large: 'text-lg', small: 'text-sm' }
+      }
+    };
+    const fnWithoutDefaults = cvx(keysWithoutDefaults);
+    expect(fnWithoutDefaults({ size: 'small' })).toBe('base-class text-sm');
+  });
+});
 
 describe('cvx function', () => {
   const variants = {

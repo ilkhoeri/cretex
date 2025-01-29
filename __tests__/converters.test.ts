@@ -1,5 +1,6 @@
 // @ts-ignore TS6133
-import { expect, test, describe } from '@jest/globals';
+import { describe, test, expect, it } from '@jest/globals';
+
 import { rem, em, px, createConverter } from '../src'; // Named exports
 import x from '../src/index'; // Default export alias
 import * as cretex from '../src/index'; // Namespace import
@@ -31,13 +32,70 @@ describe('px function', () => {
     expect(px('32')).toBe(32);
   });
 
+  test('should return number for calc(var()) values', () => {
+    expect(px('calc(1rem * var(--viewport-scale))')).toBe(16);
+  });
+
+  test('should return calc() values', () => {
+    expect(px('calc(1rem * 1)')).toEqual('calc(1rem * 1)');
+  });
+
+  it('converts rem string to px number', () => {
+    expect(px('1rem')).toBe(16);
+    expect(px('1.25rem')).toBe(20);
+  });
+
+  it('converts em string to px number', () => {
+    expect(px('1em')).toBe(16);
+    expect(px('1.25em')).toBe(20);
+  });
+
+  it('converts px string to px number', () => {
+    expect(px('12px')).toBe(12);
+  });
+
+  it('returns number if function received number as an argument', () => {
+    expect(px(16)).toBe(16);
+    expect(px('16')).toBe(16);
+  });
+
+  it('returns NaN if value cannot be parsed', () => {
+    expect(px('12p')).toBe(NaN);
+    expect(px('12re')).toBe(NaN);
+    expect(px('12%')).toBe(NaN);
+    expect(px('12vh')).toBe(NaN);
+    expect(px({})).toBe(NaN);
+    expect(px([])).toBe(NaN);
+    expect(px(null)).toBe(NaN);
+    expect(px(undefined)).toBe(NaN);
+  });
+
+  test('converts scaled rem values', () => {
+    expect(px('calc(1rem * var(--viewport-scale))')).toBe(16);
+    expect(px('calc(1.25rem * var(--viewport-scale))')).toBe(20);
+    expect(px('calc(10rem + 1vh)')).toBe('calc(10rem + 1vh)');
+  });
+
+  test('converts calc() to calc?.group[1]', () => {
+    expect(px('calc(calc(var(--example-scale) + 2) * calc(var(--scale) / 2))')).toBe('calc(var(--example-scale) + 2)');
+    expect(px('calc(var(--example-scale) + 2) * calc(var(--scale) / 2)')).toBe('var(--example-scale) + 2)');
+    expect(px('calc(var(--scale) * 3)')).toBe('var(--scale)');
+  });
+
+  test('should return NaN for undefined values', () => {
+    expect(px(undefined)).toEqual(NaN);
+  });
+
   test('should return NaN for unsupported strings', () => {
-    expect(px('unsupported')).toBe(NaN);
-    expect(px('random')).toBe(NaN);
+    expect(px('unsupported')).toEqual(NaN);
+  });
+
+  test('should return NaN for random strings', () => {
+    expect(px('random')).toEqual(NaN);
   });
 
   test('should return NaN for invalid strings', () => {
-    expect(px('invalid')).toBe(NaN);
+    expect(px('invalid')).toEqual(NaN);
   });
 });
 
@@ -115,6 +173,7 @@ describe('createConverter function', () => {
 
 describe('rem converters', () => {
   test('rem should convert numbers and strings correctly', () => {
+    expect(rem('0rem')).toEqual('0rem');
     expect(rem(16)).toBe('1rem');
     expect(rem('16px')).toBe('1rem');
     expect(rem('32px')).toBe('2rem');
@@ -128,6 +187,10 @@ describe('rem converters', () => {
   test('should handle calc() values', () => {
     expect(rem('calc(100% - 16px)')).toBe('calc(100% - 16px)');
     expect(rem('calc(100% - 20px)')).toBe('calc(100% - 20px)');
+  });
+
+  test('should return NaN for undefined values', () => {
+    expect(rem('calc(1rem * var(--viewport-scale))')).toEqual('calc(1rem * var(--viewport-scale))');
   });
 });
 

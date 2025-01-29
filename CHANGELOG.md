@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.2] - 2025-01-29
+
+### Added
+
+- Added `cleanFalsy` function and chaining support for `ocx` (`.clean()`).
+- Enhanced `ocxMap` type to support functions with an optional key parameter: `((key?: ocxKey) => ocxMap)`, enabling usage like:
+  ```ts
+  ocx([{}, key => key?.role === 'admin' && { permissions: ['read', 'write', 'delete'] }]);
+  ```
+- Provided `symbol documentation` for all functions.
+- Introduced official documentation: [ilkhoeri.github.io/cretex](https://ilkhoeri.github.io/cretex/).
+- Version now available and installable via [JSR](https://jsr.io/@cretex/dynamic).
+- Added support for **Deno**.
+- Expanded test coverage to ensure all possible return scenarios are validated for each function.
+
+### Changed
+
+- Updated `cnx` function to trim whitespace by modifying:
+  ```ts
+  inputs.join(' '); // previous
+  inputs.join(' ').trim(); // updated
+  ```
+- Updated `cvx` function to trim whitespace by modifying:
+
+  ```ts
+  variants.filter(Boolean).join(' '); // previous
+  variants
+    .filter(Boolean)
+    .join(' ')
+    .trim() // updated
+
+    [(keys.assign, variants)].join(' ') // previous
+    [(keys.assign, variants)].join(' ')
+    .trim(); // updated
+  ```
+
+### Removed
+
+- **Removed dependency on `tailwind-merge`**, meaning `cn()` and `merge()` functions are no longer included.
+- If needed, users must implement their own `cn` utility as follows:
+
+  ```ts
+  import { twMerge } from 'tailwind-merge';
+  import { cnx, type cnxValues } from 'cretex';
+
+  export function cn(...merge: cnxValues[]): string {
+    return twMerge(cnx(...merge));
+  }
+  ```
+
+---
+
 ## [0.0.1] - 2025-01-25
 
 ### Added

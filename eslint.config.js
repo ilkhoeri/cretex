@@ -4,7 +4,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'import', 'simple-import-sort', 'unused-imports', 'ban', 'prettier'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-  ignores: ['**/*.config.js', '!**/eslint.config.js'],
+  ignores: ['**/*.config.js', '!**/eslint.config.js', '/deno/_tests/**/*'],
   rules: {
     'import/order': 0, // turn off in favor of eslint-plugin-simple-import-sort
     'import/no-unresolved': 0,

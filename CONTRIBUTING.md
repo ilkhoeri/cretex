@@ -35,7 +35,7 @@ In the OSS version of VSCode the extension may be not available.
 
 ### Commands
 
-**`bun build`**
+**`bun run build`**
 
 - deletes `lib` and re-compiles `src` to `lib`
 
@@ -49,7 +49,7 @@ In the OSS version of VSCode the extension may be not available.
 
 ### Tests
 
-cretex uses Jest for testing. After implementing your contribution, write tests for it. Just create a new file under `src/__tests__` or add additional tests to the appropriate existing file.
+cretex uses Jest for testing. After implementing your contribution, write tests for it. Just create a new file under `__tests__` or add additional tests to the appropriate existing file.
 
 Before submitting your PR, run `bun test` to make sure there are no (unintended) breaking changes.
 

@@ -1,30 +1,20 @@
 {
   "name": "cretex",
-  "version": "0.0.1",
-  "license": "MIT",
-  "description": "Dynamically utility for combining different types of values ​​into a single value.",
-  "author": "Ilham Khoeri <ilkhoeri@gmail.com>",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "bugs": {
-    "url": "https://github.com/ilkhoeri/cretex/issues"
-  },
-  "homepage": "https://github.com/ilkhoeri/cretex#readme",
+  "version": "0.0.2",
+  "author": "Ilham Khoeri <ilkhoeri@gmail.com> (https://github.com/ilkhoeri)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ilkhoeri/cretex.git"
+    "url": "git+https://github.com/ilkhoeri/cretex.git"
   },
-  "funding": "https://github.com/sponsors/ilkhoeri",
-  "peerDependencies": {
-    "tailwind-merge": "latest"
-  },
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
     "@jest/globals": "^29.7.0",
     "@rollup/plugin-typescript": "^12.1.2",
+    "@swc/core": "^1.10.11",
     "@swc/jest": "^0.2.37",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
@@ -51,9 +41,6 @@
     "typescript": "^5.7.3",
     "vitest": "^3.0.4"
   },
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
-  "types": "./index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
@@ -62,10 +49,29 @@
     },
     "./package.json": "./package.json"
   },
+  "bugs": {
+    "url": "https://github.com/ilkhoeri/cretex/issues"
+  },
+  "description": "Dynamically utility for combining different types of values ​​into a single value.",
   "files": [
     "/lib",
     "/index.d.ts"
   ],
+  "funding": [
+    {
+      "type": "sponsors",
+      "url": "https://github.com/sponsors/ilkhoeri"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/oeri"
+    },
+    {
+      "type": "individual",
+      "url": "https://saweria.co/ilkhoeri"
+    }
+  ],
+  "homepage": "https://github.com/ilkhoeri/cretex#readme",
   "keywords": [
     "string",
     "variant",
@@ -83,6 +89,7 @@
     "size",
     "converter"
   ],
+  "license": "MIT",
   "lint-staged": {
     "src/*.ts": [
       "eslint --cache --fix",
@@ -110,13 +117,12 @@
     "test:watch": "bun test:ts-jest --watch",
     "test": "bun test:ts-jest",
     "test:babel": "jest --coverage --config ./configs/babel-jest.config.json",
-    "test:bun": "bun test src/",
+    "test:bun": "bun test __tests__/",
     "test:vitest": "npx vitest --config ./configs/vitest.config.ts",
     "test:ts-jest": "npx jest --config ./configs/ts-jest.config.json",
     "test:jest": "jest --coverage",
     "test:swc": "npx jest --config ./configs/swc-jest.config.json",
     "test:deno": "cd deno && deno test",
-    "prepublishOnly": "npm run test && npm run build && npm run build:deno",
     "prepare:test": "husky .husky/pre-publish \"bun test\"",
     "prepare": "husky",
     "lint": "eslint src --cache",
@@ -131,5 +137,6 @@
     "backing": {
       "npm-funding": true
     }
-  }
+  },
+  "types": "./index.d.ts"
 }

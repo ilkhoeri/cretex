@@ -15,9 +15,15 @@ deno
 ./deno
 ./deno/*
 *tests*
-__tests__
+_tests_
+./_tests_
+./*/_tests_/*
+_tests_
 ./__tests__
 ./*/__tests__/*
+__buildtest__
+./__buildtest__
+./*/__buildtest__/*
 ./*tests*/*
 *husky*
 .husky

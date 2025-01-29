@@ -104,3 +104,13 @@ dist
 .tern-port
 
 .DS_Store
+
+/lib
+
+/__buildtest__
+
+bun.lockb
+
+.log
+
+coverage

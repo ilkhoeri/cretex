@@ -8,32 +8,32 @@ function getEnv() {
   return 'development';
 }
 
-const log = Object.assign(
-  function log(message?: unknown, ...log: unknown[]) {
-    if (getEnv() !== 'production') console.log(message, ...log);
+function logger(message?: unknown, ...log: unknown[]) {
+  if (getEnv() !== 'production') console.log(message, ...log);
+}
+
+const assignLogger = {
+  error: (...args: unknown[]) => {
+    if (getEnv() !== 'production') console.log(chalk.red('⛔', ...args));
   },
-  {
-    error: (...args: unknown[]) => {
-      if (getEnv() !== 'production') console.log(chalk.red('⛔', ...args));
-    },
-    warn: (...args: unknown[]) => {
-      if (getEnv() !== 'production') console.log(chalk.yellow('⚠️', ...args));
-    },
-    info: (...args: unknown[]) => {
-      if (getEnv() !== 'production') console.log(chalk.green('⚡', ...args));
-    },
-    success: (...args: unknown[]) => {
-      if (getEnv() !== 'production') console.log(chalk.cyan('✨', ...args));
-    },
-    break: () => {
-      if (getEnv() !== 'production') console.log('');
-    },
-    build: (process: string, ...args: unknown[]) => {
-      const logProcess = chalk.grey('[') + process.toUpperCase() + chalk.grey(']');
-      if (getEnv() !== 'production') console.log(logProcess, ...args);
-    }
+  warn: (...args: unknown[]) => {
+    if (getEnv() !== 'production') console.log(chalk.yellow('⚠️', ...args));
+  },
+  info: (...args: unknown[]) => {
+    if (getEnv() !== 'production') console.log(chalk.green('⚡', ...args));
+  },
+  success: (...args: unknown[]) => {
+    if (getEnv() !== 'production') console.log(chalk.cyan('✨', ...args));
+  },
+  break: () => {
+    if (getEnv() !== 'production') console.log('');
+  },
+  build: (process: string, ...args: unknown[]) => {
+    const logProcess = chalk.grey('[') + process.toUpperCase() + chalk.grey(']');
+    if (getEnv() !== 'production') console.log(logProcess, ...args);
   }
-);
+};
+const log = Object.assign(logger, assignLogger);
 
 type Color = keyof typeof ansiColors.color;
 type Effect = keyof typeof ansiColors.effect;
@@ -58,6 +58,7 @@ const createStyledLogger = (color?: Color, effect?: Effect) => {
 };
 
 export const ck = Object.keys(ansiColors.color).reduce((acc, color) => {
+  // @ts-ignore
   acc[color] = (text: string) => createStyledLogger(color as Color)(text);
   return acc;
 }, {} as CK);
@@ -67,7 +68,7 @@ Object.keys(ansiColors.effect).forEach(effect => {
     const colorFn = ck[color as keyof typeof ansiColors.color];
     const effectFn = (text: string) => createStyledLogger(color as Color, effect as Effect)(text);
     // @ts-ignore
-    ck[color as keyof typeof ansiColors.color][effect as Effect] = effectFn;
+    colorFn[effect as Effect] = effectFn;
   });
 });
 

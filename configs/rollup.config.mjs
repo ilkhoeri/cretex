@@ -16,13 +16,13 @@ export default [
         name: 'Cretex',
         format: 'umd',
         sourcemap: false,
-        exports: 'named',
-        globals: {
-          'tailwind-merge': 'tailwindMerge'
-        }
+        exports: 'named'
+        // globals: {
+        //   'tailwind-merge': 'tailwindMerge'
+        // }
       }
     ],
-    external: ['tailwind-merge'],
+    // external: ['tailwind-merge'],
     plugins: [
       typescript({
         tsconfig: './configs/tsconfig.esm.json',

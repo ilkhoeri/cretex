@@ -1,44 +1,64 @@
-# cretex
+# **cretex**
 
 Dynamically utility for combining different types of values ​​into a single value.
 
 This function is very useful for building style configurations or other properties dynamically by simplifying flexible management based on runtime conditions.
 
-- includes tailwind-merge.
+You can find `cretex` in:
 
 <div align="left">
+  <a href="https://jsr.io/@cretex/utility">
+    <img height="21" alt="JSR Logo" src="https://img.shields.io/badge/jsr-v0.0.2-f7df1e.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAxMi45MyI+PHBhdGggZD0ibTE2LjYxLDEuODVWMEgzLjY5djMuN0gwdjcuMzloNy4zOXYxLjg0aDEyLjkydi0zLjY5aDMuN1YxLjg1aC03LjM5Wm0tOS4yMyw3LjM5SDEuODR2LTMuN2gxLjg0djEuODRoMS44NVYxLjg1aDEuODR2Ny4zOVptNy4zOS01LjU0aC0zLjd2MS44NGgzLjd2NS41NGgtNS41NHYtMS44NGgzLjd2LTEuODVoLTMuN1YxLjg1aDUuNTR2MS44NFptNy4zOSwzLjY5aC0xLjg1di0xLjg0aC0xLjg0djUuNTRoLTEuODRWMy43aDUuNTR2My42OVoiIGZpbGw9IiNmZmYiIHN0cm9rZS13aWR0aD0iMCIvPjwvc3ZnPg==" />
+  </a>
+
   <a href="https://www.npmjs.com/package/cretex">
-    <img src="https://badgen.net/npm/v/cretex" alt="version" />
+    <img src="https://img.shields.io/npm/v/cretex.svg?logo=npm" alt="version" />
   </a>
 </div>
 
 ## Installation
 
+### Requirements
+
+- TypeScript `4.5+!`
+- You must enable `strict` mode in your `tsconfig.json`. This is a best practice for all TypeScript projects.
+
+  ```ts
+  // tsconfig.json
+  {
+    // ...
+    "compilerOptions": {
+      // ...
+      "strict": true
+    }
+  }
+  ```
+
 using [npm](https://www.npmjs.com/package/cretex)
 
-```cirru
+```bash
 npm install cretex
 ```
 
 using [bun](https://bun.sh/docs/cli/add)
 
-```cirru
+```bash
 bun add cretex
 ```
 
 using [pnpm](https://pnpm.io/cli/add)
 
-```cirru
+```bash
 pnpm add cretex
 ```
 
 using [yarn](https://classic.yarnpkg.com/en/package/cretex)
 
-```cirru
+```bash
 yarn add cretex
 ```
 
-# cnx
+# **cnx**
 
 The cnx function is a utility to dynamically combine string class names based on various input types, such as strings, numbers, objects, arrays, or functions.
 This function combines various input types and simplifies complex management by producing clean and valid strings.
@@ -57,29 +77,31 @@ cnx(['', baz, (foo as string) !== 'foo' && bar], { '': !props }, '', () => ({ ''
 
 ## How cnx works:
 
-1. Initialization:
+1. **Initialization:** <br />
    An empty array (classes) is used to store valid strings.
 
-2. Input Iteration:
-   Each item in the `...inputs` parameter (spread operator) is processed with the following logic:
+2. **Input Iteration:** <br />
+   Each item in the `...inputs` parameter (spread operator) is processed with the following logic: <br />
 
-- String or Number:
+- String or Number: <br />
   Immediately converted to a string and inserted into the array.
-- Array:
+- Array: <br />
   Processed recursively using `cnx(...input)` to support nested structures.
-- Object:
+- Object: <br />
   Iterate over the keys and values ​​(key-value pairs). If the value is "truthy" (e.g., `true`), the key (class name) is added to the array.
-- Function:
+- Function: <br />
   The function is called, and the result is processed recursively using cnx.
-- Null, Undefined, or Boolean:
+- Null, Undefined, or Boolean: <br />
   Ignored, passed without processing.
 
-3. Output:
+3. **Output:** <br />
    The collected classes are combined into a space-separated string.
 
 ## Example of Usage
 
-```tsx
+### Basic Merging
+
+```ts
 cnx('hello', 'world');
 // Output: "hello world"
 
@@ -89,12 +111,13 @@ cnx(() => 'there', 'dynamic');
 cnx(['extra', 0, false, 'bar']);
 // Output: "extra bar"
 
-cnx(Boolean, Object, undefined, null, '', 0, NaN);
-// Output: ""
-
 cnx('hello', true && 'foo', false && 'bar');
 // Output: "hello foo"
+```
 
+### Complex Merging
+
+```ts
 cnx(['foo'], ['', 0, false, 'bar'], [['baz', [['hello'], 'there']]]);
 // Output: "foo bar baz hello there"
 
@@ -108,11 +131,35 @@ cnx([{ color: 'red', fontSize: '16px' }, () => ({ backgroundColor: 'blue' }), un
 // Output: "color fontSize backgroundColor margin padding"
 ```
 
+### Ignored Falsy
+
+```ts
+cnx(Boolean, Object, undefined, null, '', 0, NaN);
+// Output: ""
+```
+
 ## Advantages
 
 - Makes it easier to manage dynamic CSS classes.
 - Logic wrangling of class merging in code.
 - Useful in frameworks like React, Vue, or Svelte for changing class conditions.
+
+---
+
+## Merge class tailwind-merge
+
+```ts
+import { cnx, type cnxValues } from 'cretex';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...merge: cnxValues[]): string {
+  return twMerge(cnx(...merge));
+}
+```
+
+```ts
+cn('bg-black dark:bg-white font-normal', { 'font-medium': true });
+```
 
 ## IntelliSense
 
@@ -139,7 +186,7 @@ If you are using the vscode editor, enable autocomplete for the [`tailwindcss`](
   "rules": {},
   "settings": {
     "tailwindcss": {
-      "callees": ["cn", "merge", "twMerge"],
+      "callees": ["cnx", "cn"],
       "config": "tailwind.config.ts"
     }
   },
@@ -147,34 +194,13 @@ If you are using the vscode editor, enable autocomplete for the [`tailwindcss`](
 }
 ```
 
-## Merger
-
-### Merge class
-
-Merge with tailwind-merge
-
-```tsx
-import { cnx, type cnxValues } from 'cretex';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs: cnxValues[]) {
-  return twMerge(cnx(...inputs));
-}
-```
-
-### Use merge or cn
-
-```tsx
-import { merge } from 'cretex';
-
-<div className={merge('bg-black/60 dark:bg-white/60 font-medium border', { 'font-extrabold border-0': true })} />;
-```
+<br />
 
 ---
 
 ---
 
-# cvx
+# **cvx**
 
 The cvx function is a utility for managing string class variants in a structured manner.
 It allows combining classes based on a predefined variant configuration, with the option to include default values ​​(`defaultVariants`) and customization based on user input.
@@ -195,30 +221,32 @@ cvx({
 
 ## How cvx works:
 
-1. Merge Variants:
+1. **Merge Variants:** <br />
    The variants provided by the user via `variant` are merged with the default variants (`defaultVariants`), if any.
 
-2. Determine Class:
+2. **Determine Class:** <br />
    For each key in `variants`, the function maps the corresponding value from the merged `variant`.
 
-3. Generate String:
+3. **Generate String:** <br />
    The class values ​​are merged into a single space-separated string.
    If `assign` is given, this string is prefixed with the value of `assign`.
 
 ## Example of Usage
 
 ```tsx
-import { cvx, twMerge, rem, type cvxProps } from 'cretex';
+import { cvx, type cvxProps } from 'cretex';
 
 const classes = cvx({
   // assign values that is definitely returned
   assign: 'bg-muted rounded-sm px-2 border flex items-center justify-center',
   variants: {
     variant: {
+      light: 'font-light',
       bold: 'font-bold',
-      italic: 'font-italic',
-      semibold: 'font-semibold',
-      light: 'font-light'
+      semibold: 'font-semibold'
+    },
+    effect: {
+      italic: 'font-italic'
     },
     color: {
       blue: 'text-blue-600',
@@ -240,39 +268,33 @@ const classes = cvx({
     size: 'lg'
   }
 });
+```
 
+```tsx
 type VariantsType = cvxProps<typeof classes>;
-interface StylesProps extends VariantsType {
-  unstyled?: boolean;
-  className?: string;
-}
-export function getStyles(props: StylesProps) {
-  const { className, unstyled, ...rest } = props;
-  return { className: twMerge(!unstyled && classes({ ...rest }), className) };
-}
+// Output:
+// type VariantsType = {
+//     variant?: "bold" | "light" | "semibold" | undefined;
+//     effect?: "italic" | undefined;
+//     color?: "blue" | "green" | "red" | "purple" | undefined;
+//     size?: "sm" | "md" | "lg" | "xl" | undefined;
+// };
+```
 
-export function CvxDemo(props: StylesProps) {
-  const { className, color, size, variant, unstyled } = props;
-  return (
-    <div className="flex flex-col gap-4">
-      <div {...getStyles(props)} style={{ width: rem(32), height: rem('32px') }}>
-        COMPONENT
-      </div>
-      <div className={classes()}>COMPONENT</div>
-      <div className={classes({ color: 'red', size: 'lg' })}>COMPONENT</div>
-      <div className={twMerge(classes({ color: 'red', size: 'md' }), 'bg-black/60 dark:bg-white/60 text-white dark:text-black font-extrabold border-0')}>
-        COMPONENT
-      </div>
-    </div>
-  );
-}
+```tsx
+type Color = NonNullable<cvxProps<typeof classes>['color']>;
+// Output:
+// type Color = "blue" | "green" | "red" | "purple";
 ```
 
 ## Advantages
 
-- Flexibility: Supports a wide range of variant combinations.
-- Consistency: Simplifies class management with a clearly defined structure.
-- Efficiency: Minimizes duplication of class logic in code.
+- Flexibility: <br />
+  Supports a wide range of variant combinations.
+- Consistency: <br />
+  Simplifies class management with a clearly defined structure.
+- Efficiency: <br />
+  Minimizes duplication of class logic in code.
 
 ## IntelliSense
 
@@ -294,14 +316,15 @@ If you are using the vscode editor, enable autocomplete for the [`tailwindcss`](
 
 [`cva`](https://cva.style/docs) uses the first argument as a constant that will be distributed throughout the variance, in cvx this argument is moved to the `assign` parameter. cvx does not or has not passed the `class` and `className` parameters.
 
----
+<br />
 
 ---
 
-# ocx
+---
 
-The ocx function is a utility for combining different types of values ​​into a single object. This function is very useful for building style configurations or other properties dynamically by simplifying flexible management based on runtime conditions.
-It can accept various input types, such as objects, arrays, functions, or primitive values, and returns an object that combines all relevant properties.
+# **ocx**
+
+The `ocx` function is a utility for combining different types of values into a single object. This function is very useful for building dynamic configurations or other properties by simplifying flexible management based on runtime conditions. It accepts various input types, such as objects, arrays, functions, or primitive values, and returns an object that combines all relevant properties.
 
 ## Syntax
 
@@ -309,74 +332,176 @@ It can accept various input types, such as objects, arrays, functions, or primit
 function ocx<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T>;
 ```
 
-## How ocx works:
+Additionally, `ocx` provides a `.clean()` method for filtering out falsy values (e.g., `false`, `undefined`, `null`, `NaN`, `0`) from the resulting object:
 
-1. Check each input from the parameter sequentially.
-   If the input is a function, the function is called, and the result is processed recursively.
-   If the input is an array, the elements in it are processed recursively.
-   If the input is an object, the properties of the object are merged into the final result.
+```ts
+ocx.clean<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T>;
+```
 
-2. Output:
-   Primitive values ​​such as strings, numbers, and null are ignored.
-   The final result is an object with all the properties of the valid input.
+## How `ocx` works:
 
-3. Repeated values ​​on the same key are overwritten by the last input in the list.
+1. **Input Processing:** <br />
+
+   - Sequentially checks each parameter.
+   - If the input is a function, it calls the function and processes the result recursively.
+   - If the input is an array, it processes each element recursively.
+   - If the input is an object, its properties are merged into the final result.
+
+2. **Output:** <br />
+
+   - Primitive values (e.g., strings, numbers, `null`) are ignored.
+   - The final result is an object containing all valid properties from the inputs.
+
+3. **Overwriting Behavior:** <br />
+
+   - Duplicate keys are overwritten by the last input in the list.
+
+4. **Falsy Value Filtering (using `.clean()`):** <br />
+   - Removes keys with falsy values (`false`, `undefined`, `null`, `NaN`, `0`).
 
 ## Example of Usage
 
-```tsx
-ocx({ a: 1 }, { b: 2 });
-// Output: { a: 1, b: 2 }
-
-ocx([{ a: 1 }, { b: 2 }]);
-// Output: { a: 1, b: 2 }
-
-ocx(() => ({ a: 1 }));
-// Output: { a: 1 }
-
+```ts
 ocx(
   { a: 1 },
-  () => ({ b: 2 }),
-  [{ c: 3 }, { d: 4 }],
-  'ignored', // String will be ignored
-  null // Null will be ignored
+  [{ b: 2 }, { d: 4 }],
+  () => ({ c: 3 }),
+  key => key?.a && { 'key?.a': key.a === 1 },
+  {},
+  0, // will be ignored
+  'string', // will be ignored
+  null, // will be ignored
+  NaN // will be ignored
 );
-// Output: {"a":1,"b":2,"c":3,"d":4}
+// Output: { a: 1, b: 2, d: 4, c: 3, 'key?.a': true }
+```
 
-ocx<React.CSSProperties>([
-  { baz: 'hello', size: !false },
-  () => ({ foo: 'world' }),
-  undefined,
-  [true && { margin: '10px' }, () => ({ padd: '5px', '--index': 0 })],
-  false && [{ out: '1px' }, { border: 'cya', '--index': 11 }],
-  null,
-  [[true && { bar: null, baz: false, qux: 'qux!' }]]
-]);
-// Output: {"baz":false,"size":true,"foo":"world","margin":"10px","padd":"5px","--index":11,"bar":null,"qux":"qux!"} as `React.CSSProperties & Record<string, any>`
+### Using `.clean()`
+
+```ts
+const cleaned = ocx.clean({ a: 1, b: { b1: 'b1' }, c: null, d: undefined });
+console.log(cleaned);
+// Output: { a: 1, b: { b1: 'b1' } }
+```
+
+## Real-World Examples
+
+### Dynamic API Response Combination
+
+```ts
+const user = { id: 1, name: 'John Doe', role: 'admin' };
+const preferences = { theme: 'dark', language: 'en' };
+const metadata = { createdAt: '2023-01-01', isActive: true };
+
+// API responses are combined with additional data
+const apiResponse = ocx.clean(
+  user,
+  { preferences, metadata },
+  () => ({ timestamp: new Date().toISOString() }),
+  key => key?.role === 'admin' && { permissions: ['read', 'write', 'delete'] }
+);
+
+console.log('API Response:', apiResponse);
+// API Response: {
+//   id: 1,
+//   name: 'John Doe',
+//   role: 'admin',
+//   preferences: { theme: 'dark', language: 'en' },
+//   metadata: { createdAt: '2023-01-01', isActive: true },
+//   timestamp: '2025-01-28T15:59:40.643Z',
+//   permissions: [ 'read', 'write', 'delete' ]
+// }
+```
+
+### Complex Merging of Nested and Dynamic Data
+
+```ts
+const target = { a: 1, b: { b0: 'b0', b1: 'b1' } };
+const source = { b: { b0: 'b0', b2: 'b2', b3: 'b3' }, e: 4 };
+const deepSource = { b: { b4: 'b4', b6: 'b6' }, f: 4 };
+const dynamicSource = [
+  { f: { f1: 'f1', f2: 'f2' } },
+  { g: NaN && 'g0' }, // like this if you want to use the falsy value of key?.g
+  !false && { h: { h1: 'h1', h2: 'h2' } }, // like this if you want to get valid value
+  true && { f: { f3: 'f3', f1: 'F1' } }
+];
+const getKeys = (key?: ocxKey) => key && { keys: Object.keys(key) };
+
+console.log(
+  'Complex Combined:',
+  ocx(
+    'ignored',
+    target,
+    source,
+    deepSource,
+    () => dynamicSource,
+    key => key?.f && { f: { f5: 'F5', f2: 'F2', f1: 'FOO' } },
+    getKeys
+  )
+);
+// Complex Combined: {
+//   a: 1,
+//   b: { b0: 'b0', b1: 'b1', b2: 'b2', b3: 'b3', b4: 'b4', b6: 'b6' },
+//   e: 4,
+//   f: { f1: 'FOO', f2: 'F2', f3: 'f3', f5: 'F5' },
+//   g: NaN,
+//   h: { h1: 'h1', h2: 'h2' },
+//   keys: [ 'a', 'b', 'e', 'f', 'g', 'h' ]
+// }
+```
+
+### Complex API Serialization Example
+
+```ts
+const data = [
+  { id: 1, name: 'Alice', active: true, details: { role: 'user', age: 25 } },
+  { id: 2, name: 'Bob', active: false, details: { role: 'moderator', age: 30 } },
+  { id: 3, name: 'Charlie', active: true, details: { role: 'admin', age: 35 } }
+];
+
+const serialized = data.map(item =>
+  ocx.clean(
+    item,
+    { isAdult: item.details.age >= 18 },
+    key => key?.active && { status: 'online' },
+    !item.active && { status: 'offline', inactiveSince: '2023-12-01' }
+  )
+);
+
+console.log(serialized);
+// Output:
+// [
+//   { id: 1, name: 'Alice', active: true, details: { role: 'user', age: 25 }, isAdult: true, status: 'online' },
+//   { id: 2, name: 'Bob', details: { role: 'moderator', age: 30 }, isAdult: true, status: 'offline', inactiveSince: '2023-12-01' },
+//   { id: 3, name: 'Charlie', active: true, details: { role: 'admin', age: 35 }, isAdult: true, status: 'online' }
+// ]
 ```
 
 ## Advantages
 
-- This function is useful for managing style properties dynamically, such as when using a frontend framework with object-based style management.
-- Manage object-based configuration structures
-- Combine multiple values ​​in a controlled and flexible way
+- Simplifies dynamic object creation for configurations or API responses.
+- Supports deep merging of objects.
+- Handles arrays, functions, and dynamic values seamlessly.
+- Filters out unnecessary or falsy values when `.clean()` is used.
+
+<br />
 
 ---
 
 ---
 
-# rem - em
+# **rem - em**
 
 rem and em functions are converters for changing values ​​in various formats into values ​​with rem or em units.
 
-## Sintaks:
+## Syntax
 
 ```ts
 const rem: (value: unknown) => string;
 const em: (value: unknown) => string;
 ```
 
-### Parameters:
+### Parameters
 
 - `value` (unknown): The value to convert. Can be a number, string, or supported expression (e.g. `calc`, `clamp`).
 - Returns: A string containing a value in rem or em units.
@@ -400,27 +525,29 @@ rem('calc(100% - 10px)');
 // Output: "calc(100% - 0.625rem)"
 ```
 
----
+<br />
 
 ---
 
-# px
+---
+
+# **px**
 
 The px function is used to convert a value to pixels or get a numeric value from a string in pixels, rems, or ems.
 
-## Syntax:
+## Syntax
 
 ```ts
 function px(value: unknown): string | number;
 ```
 
-### Parameters:
+### Parameters
 
-- `value` (unknown): The value to convert. Can be a number or a string.
-- Returns:
-  If value is a number, it is returned directly.
-
-  If value is a string:
+- **`value` (unknown):** The value to convert. Can be a number or a string.
+- **Returns:** <br />
+  **If value is a number:** it is returned directly.
+  <br />
+  **If value is a string:** <br />
   If it contains px units, it is returned as a unitless number.
   If it contains rem or em units, it is converted to pixels assuming 1 rem/em = 16 pixels.
   If it contains an expression such as calc or var, it is returned as a string.
@@ -441,25 +568,27 @@ px('calc(100% - 10px)');
 // Output: "calc(100% - 10px)"
 ```
 
-# createConverter
+<br />
+
+# **createConverter**
 
 This function is a utility to create a custom converter with specific units. For example, rem and em are created using this function.
 
-## Syntax:
+## Syntax
 
 ```ts
 function createConverter(units: string, { shouldScale }?: { shouldScale?: boolean | undefined }): (value: unknown) => string;
 ```
 
-### Parameters:
+### Parameters
 
-- `units` (string): The units used by the converter (e.g. `rem`, `em`).
-- `options` (object) (optional):
+- `units` (string): <br /> The units used by the converter (e.g. `rem`, `em`).
+- `options` (object) (optional): <br />
   `shouldScale` (boolean): Specifies whether the conversion result should be scaled using the scaleRem function.
-- Returns:
+- **Returns:** <br />
   A converter function that accepts a value to convert to the specified units.
 
-## Example of Usage:
+## Example of Usage
 
 ```ts
 const pt = createConverter('pt');
@@ -474,109 +603,117 @@ pt(16);
 - `Advanced Expressions`: Supports operations with calc, clamp, and other CSS functions.
 - `Scalability`: The createConverter function allows the creation of custom converters for other units in the future.
 
----
+<br />
 
 ---
 
-## **Important: Using Named and Default Exports Together**
+---
+
+# **Exported**
+
+## Using Named and Default Exports Together
 
 Our library provides both **named exports** and a **default export** to give you flexibility when importing and using its features. However, when using both export styles together in a project, there are important considerations due to differences in how module systems handle these exports, especially if you're working with different module formats like **ES Modules (ESM)** and **CommonJS (CJS)**.
 
-### **For ES Modules Users**
+## **For ES Modules Users**
 
 If you're using an ESM-based environment (e.g., modern browsers, `node` with `"type": "module"`, or build tools like Vite, Webpack, or Rollup with ESM configuration), you can import the library as follows:
 
 1. **Using the default export**:
 
    ```typescript
-   import cretex from 'cretex';
+   import x from 'cretex';
 
    // Access functions, types, or properties through the default export
-   cretex.cnx();
-   cretex.twMerge();
+   x.cnx();
+   x.cvx();
+   x.ocx();
    ```
 
 2. **Using named exports**:
 
    ```typescript
-   import { cnx, cvx, twMerge } from 'cretex';
+   import { cnx, cvx, ocx } from 'cretex';
 
    // Use specific functions or properties directly
    cnx();
-   twMerge();
+   cvx();
+   ocx();
    ```
 
 3. **Combining default and named imports**:
 
    ```typescript
-   import cretex, { cnx } from 'cretex';
+   import x, { cnx } from 'cretex';
 
-   cretex.cnx(); // Access via default export
+   x.cnx(); // Access via default export
    cnx(); // Access directly as a named export
    ```
 
-### **For CommonJS Users**
+## **For CommonJS Users**
 
 If you're working in a CommonJS environment (e.g., Node.js with `"type": "commonjs"`), the behavior of default exports changes slightly:
 
 1. **Default export is wrapped in a `default` property**:
 
    ```javascript
-   const cretex = require('cretex').default;
+   const x = require('cretex').default;
 
    // Access functions, types, or properties through the default export
-   cretex.cnx();
-   cretex.twMerge();
+   x.cnx();
+   x.cvx();
+   x.ocx();
    ```
 
 2. **Using named exports (requires destructuring)**:
 
    ```javascript
-   const { cnx, twMerge } = require('cretex');
+   const { cnx, cvx, ocx } = require('cretex');
 
    cnx();
-   twMerge();
+   cvx();
+   ocx();
    ```
 
-### **Why This Behavior?**
+**Why This Behavior?**
 
 This behavior arises because CommonJS and ES Modules have different mechanisms for handling default exports:
 
 - In ES Modules, the `default` export is directly accessible.
 - In CommonJS, `default` exports are wrapped in an object (`module.exports`), requiring access via `.default`.
 
-### **How We Recommend Using This Library**
+## **How We Recommend Using This Library**
 
 To minimize confusion and ensure compatibility:
 
 - Prefer using **named exports** for better clarity and tree-shaking in ESM.
 - Use the **default export** when you need a single namespace object to organize all features of the library.
 
-### **Targeting ES2020**
+## **Targeting ES2020**
 
 This library is compiled with **`target: es2020`**, meaning it utilizes modern JavaScript features. Ensure that your environment or build tools support ES2020 syntax or transpile the code if necessary.
 
 ---
 
-## Example Table of Imports
+**Example Table of Imports**
 
-| **Use Case**                | **ESM Import Syntax**                    | **CJS Import Syntax**                                                                   |
-| --------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------- |
-| Default Export              | `import cretex from 'cretex';`           | `const cretex = require('cretex').default;`                                             |
-| Named Exports               | `import { cnx, twMerge } from 'cretex';` | `const { cnx, twMerge } = require('cretex');`                                           |
-| Combining Default and Named | `import cretex, { cnx } from 'cretex';`  | `const cretex = require('cretex').default;` <br /> `const { cnx } = require('cretex');` |
+| **Use Case**                | **ESM Import Syntax**                     | **CJS Import Syntax**                                                              |
+| --------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------- |
+| Default Export              | `import x from 'cretex';`                 | `const x = require('cretex').default;`                                             |
+| Named Exports               | `import { cnx, cvx, ocx } from 'cretex';` | `const { cnx, cvx, ocx } = require('cretex');`                                     |
+| Combining Default and Named | `import x, { cnx } from 'cretex';`        | `const x = require('cretex').default;` <br /> `const { cnx } = require('cretex');` |
 
 By understanding these nuances, you can confidently use this library in any environment.
 
 ---
 
-## Links
+# **Links**
 
 [Repository](https://github.com/ilkhoeri/cretex)
 [Documentation](https://oeri.vercel.app)
 
-## License
+# **License**
 
-MIT License
+[MIT License](./LICENSE)
 
 [© ilkhoeri](https://github.com/ilkhoeri/cretex/blob/main/LICENSE)
