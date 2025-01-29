@@ -125,6 +125,7 @@
     "test:deno": "cd deno && deno test",
     "prepare:test": "husky .husky/pre-publish \"bun test\"",
     "prepare": "husky",
+    "jsr:publish": "cd deno/lib && npx jsr publish",
     "lint": "eslint src --cache",
     "format": "prettier src",
     "typecheck": "tsc --noEmit",

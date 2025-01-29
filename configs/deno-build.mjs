@@ -5,7 +5,7 @@
 //
 // @ts-check
 
-import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
+import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync, copyFileSync } from 'fs';
 import { dirname } from 'path';
 
 // Node's path.join() normalize explicitly-relative paths like "./index.ts" to
@@ -16,11 +16,17 @@ const projectRoot = process.cwd();
 const nodeSrcRoot = join(projectRoot, 'src');
 const denoLibRoot = join(projectRoot, 'deno', 'lib');
 
+// Baca versi dari package.json
+const packageJsonPath = join(projectRoot, 'package.json');
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+const packageVersion = packageJson.version || '0.0.1';
+
 const skipList = [
   join(projectRoot, '__tests__', 'object-in-es5-env.test.ts'),
   join(projectRoot, '__tests__', 'language-server.test.ts'),
   join(projectRoot, '__tests__', 'language-server.source.ts')
 ];
+
 const walkAndBuild = (/** @type string */ dir) => {
   for (const entry of readdirSync(join(nodeSrcRoot, dir), {
     withFileTypes: true,
@@ -78,8 +84,32 @@ const walkAndBuild = (/** @type string */ dir) => {
   }
 };
 
+// Proses konversi kode ke Deno
 walkAndBuild('');
 
 writeFileSync(join(denoLibRoot, 'mod.ts'), `export * from "./index.ts";\nexport { x as default } from "./index.ts";\n`, {
   encoding: 'utf-8'
 });
+
+// **Tulis file deno.json**
+const denoJsonContent = JSON.stringify({
+  name: "@cretex/dynamic",
+  version: packageVersion,
+  license: "MIT",
+  exports: "./mod.ts"
+}, null, 2); // Indentasi 2 spasi untuk format yang rapi
+
+writeFileSync(join(denoLibRoot, 'deno.json'), denoJsonContent, { encoding: 'utf-8' });
+
+// **Salin file LICENSE ke deno/lib/**
+const licensePath = join(projectRoot, 'LICENSE');
+const licenseDest = join(denoLibRoot, 'LICENSE');
+
+try {
+  copyFileSync(licensePath, licenseDest);
+  console.log("LICENSE file copied successfully.");
+} catch (error) {
+  console.warn("LICENSE file not found. Skipping copy.");
+}
+
+console.log('File index.ts, deno.json, dan LICENSE berhasil diperbarui!');

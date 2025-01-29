@@ -6,15 +6,10 @@ This function is very useful for building style configurations or other properti
 
 You can find `cretex` in:
 
-<div align="left">
-  <a href="https://jsr.io/@cretex/utility">
-    <img height="21" alt="JSR Logo" src="https://img.shields.io/badge/jsr-v0.0.2-f7df1e.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAxMi45MyI+PHBhdGggZD0ibTE2LjYxLDEuODVWMEgzLjY5djMuN0gwdjcuMzloNy4zOXYxLjg0aDEyLjkydi0zLjY5aDMuN1YxLjg1aC03LjM5Wm0tOS4yMyw3LjM5SDEuODR2LTMuN2gxLjg0djEuODRoMS44NVYxLjg1aDEuODR2Ny4zOVptNy4zOS01LjU0aC0zLjd2MS44NGgzLjd2NS41NGgtNS41NHYtMS44NGgzLjd2LTEuODVoLTMuN1YxLjg1aDUuNTR2MS44NFptNy4zOSwzLjY5aC0xLjg1di0xLjg0aC0xLjg0djUuNTRoLTEuODRWMy43aDUuNTR2My42OVoiIGZpbGw9IiNmZmYiIHN0cm9rZS13aWR0aD0iMCIvPjwvc3ZnPg==" />
-  </a>
+[![NPM](https://img.shields.io/npm/v/cretex.svg?logo=npm)](https://www.npmjs.com/package/cretex)
 
-  <a href="https://www.npmjs.com/package/cretex">
-    <img src="https://img.shields.io/npm/v/cretex.svg?logo=npm" alt="version" />
-  </a>
-</div>
+[![JSR](https://jsr.io/badges/@cretex/dynamic)](https://jsr.io/@cretex/dynamic)
+[![JSR Score](https://jsr.io/badges/@cretex/dynamic/score)](https://jsr.io/@cretex/dynamic)
 
 ## Installation
 
@@ -717,3 +712,8 @@ By understanding these nuances, you can confidently use this library in any envi
 [MIT License](./LICENSE)
 
 [© ilkhoeri](https://github.com/ilkhoeri/cretex/blob/main/LICENSE)
+
+# **Others**
+
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ilkhoeri/cretex/test.yml?branch=main&label=Unit%20Tests&style=flat-square)](https://github.com/ilkhoeri/cretex)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/ilkhoeri/cretex?style=flat-square)](https://codeclimate.com/github/ilkhoeri/cretex/test_coverage)
