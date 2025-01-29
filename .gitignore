@@ -109,6 +109,8 @@ dist
 
 /__buildtest__
 
+/script/**/*.js
+
 bun.lockb
 
 .log

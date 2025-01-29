@@ -18,9 +18,9 @@ The following steps will get you setup to contribute changes to this repo:
 
 2. Clone your forked repo: `git clone git@github.com:{your_username}/cretex.git`
 
-3. Run `bun install` to install dependencies.
+3. Run `yarn` to install dependencies.
 
-4. Start playing with the code! You can do some simple experimentation in [`playground.ts`](playground.ts) (see `bun play` below) or start implementing a feature right away.
+4. Start playing with the code! You can do some simple experimentation in [`playground.ts`](playground.ts) (see `yarn play` below) or start implementing a feature right away.
 
 ## Alternative: VSCode Dev Container setup
 
@@ -35,15 +35,15 @@ In the OSS version of VSCode the extension may be not available.
 
 ### Commands
 
-**`bun run build`**
+**`yarn build`**
 
 - deletes `lib` and re-compiles `src` to `lib`
 
-**`bun test`**
+**`yarn test`**
 
 - runs all Jest tests and generates coverage badge
 
-**`bun play`**
+**`yarn play`**
 
 - executes [`playground.ts`](playground.ts), watches for changes. useful for experimentation
 
@@ -51,7 +51,7 @@ In the OSS version of VSCode the extension may be not available.
 
 cretex uses Jest for testing. After implementing your contribution, write tests for it. Just create a new file under `__tests__` or add additional tests to the appropriate existing file.
 
-Before submitting your PR, run `bun test` to make sure there are no (unintended) breaking changes.
+Before submitting your PR, run `yarn test` to make sure there are no (unintended) breaking changes.
 
 ### Documentation
 

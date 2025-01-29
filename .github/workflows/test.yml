@@ -21,10 +21,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - run: bun install
-      - run: bun add typescript@${{ matrix.typescript }}
-      - run: bun run build
-      - run: bun test
+      - run: yarn install
+      - run: yarn add typescript@${{ matrix.typescript }}
+      - run: yarn run build
+      - run: yarn test
 
   test-deno:
     runs-on: ubuntu-latest
@@ -40,8 +40,8 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.deno }}
-      - run: bun install
-      - run: bun build:deno
+      - run: yarn install
+      - run: yarn build:deno
       - run: deno --version
       - run: deno test
         working-directory: ./deno/lib
@@ -65,6 +65,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - run: bun install
-      - run: bun prettier:check
-      - run: bun lint:check
+      - run: yarn install
+      - run: yarn prettier:check
+      - run: yarn lint:check

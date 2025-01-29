@@ -91,7 +91,7 @@ writeFileSync(join(denoLibRoot, 'mod.ts'), `export * from "./index.ts";\nexport 
   encoding: 'utf-8'
 });
 
-// **Tulis file deno.json**
+// **Write deno.json file**
 const denoJsonContent = JSON.stringify({
   name: "@cretex/dynamic",
   version: packageVersion,
@@ -101,7 +101,7 @@ const denoJsonContent = JSON.stringify({
 
 writeFileSync(join(denoLibRoot, 'deno.json'), denoJsonContent, { encoding: 'utf-8' });
 
-// **Salin file LICENSE ke deno/lib/**
+// **cp LICENSE to ./deno/lib**
 const licensePath = join(projectRoot, 'LICENSE');
 const licenseDest = join(denoLibRoot, 'LICENSE');
 
