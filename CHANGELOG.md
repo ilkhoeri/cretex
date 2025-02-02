@@ -5,11 +5,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.4] - 2025-01-31
+
+### Changed
+
+#### **Refactored:**
+
+- `ocx`
+
+  - **Improvements:** Covers all scenarios that were present in the `ocx.raw()` implementation, including:
+
+    - **Replaced** `new WeakSet<object>()` with `new WeakMap<object, object>()` to avoid duplicate processing of nested objects and prevent infinite loops.
+    - **Created** a separate `merge()` function to make it more modular.
+    - **Avoided direct mutation of `acc`** to make it safer and more predictable.
+    - **Ensures that processed object references** are not reprocessed.
+    - **Supports all previous scenarios** more efficiently.
+    - **Supports arrays as input** and processes the elements in the array with recursion.
+    - **Supports functions as input** and executes their results to get the objects to merge.
+    - **Supports deep object merging** using recursion with [`ocx.raw`](./src/ocx.ts).
+    - **Use `Reflect.ownKeys()` to handle `Symbol` property** to avoid losing special keys.
+    - **Maintain compatibility with various input types (objects, functions, arrays, symbols, etc.)**
+
+  - **Handling Scheme Comparison**
+
+    | **Scenario**                                        | **Previous**                   | **Update**                          |
+    | --------------------------------------------------- | ------------------------------ | ----------------------------------- |
+    | **Recursively merge objects**                       | ✅ Yes                         | ✅ Yes, safer                       |
+    | **Handle arrays and merge their elements**          | ✅ Yes                         | ✅ Yes, more optimal                |
+    | **Run functions as input and merge the results**    | ✅ Yes                         | ✅ Yes, more modular                |
+    | **Prevent infinite loops due to cyclic references** | ✅ Yes, `WeakSet` is used      | ✅ Yes, `WeakMap` is more effective |
+    | **Handle symbols (`Symbol`) as keys**               | ✅ `Reflect.ownKeys()` is used | ✅ Still used                       |
+    | **Use `Reflect.ownKeys()` to handle `Symbol`**      | ⚠️ Sometimes                   | ✅ Always now                       |
+    | **Prevent direct mutation on `acc`**                | ⚠️ Happens sometimes           | ✅ Fixed, safer                     |
+    | **Avoid reprocessing the same object**              | ❌ Not yet                     | ✅ `WeakMap` ensures this           |
+    | **More modular by separating `merge()` function**   | ❌ No separation               | ✅ Yes, more modular                |
+
+  - **Conclusion:**
+    **Functionality remains the same as the previous version** but now it is more **optimal**, **secure**, and **easier to maintain**.
+
+  - **Removed:**
+
+    - `.clean()` chaining, as `ocx` now **removes falsy values by default**.
+
+  - **Introduced:**
+
+    - `.raw()` chaining to **preserve falsy values** when needed.
+    - `.preserve()` chaining to **preserve root values without overwriting**, only change the value if it does not exist.
+
+  - **Added**:
+
+    - Support handles merging objects containing `Symbol` keys.
+    - Support for `Symbol` as object keys in `ocx` and `ocx.raw()`.
+
+  - **Fixed**:
+
+    - Issue where `Symbol` keys were ignored during merging.
+
+### Removed
+
+- **`cleanFalsy`**. Now a **standalone function** as `clean` with **higher flexibility**
+  - **Improved**:
+    - **Preserves:** `Symbol` keys while still removing falsy values.
+    - **implementation:** to use `seen = new WeakSet<object>()` by default, preventing infinite recursion and improving performance.
+  - Improved **deep cleaning** for objects, empty objects, arrays, and mixed data structures.
+  - Added **new documentation** section for `clean()`.
+- **`px`, `rem`, `em`, and `createConverter`** functions are now **Removed**.
+  - These functions will no longer be distributed within this package.
+  - They are now available via a **separate npm package**: [**`str-merge`**](https://www.npmjs.com/package/str-merge).
+  - Users requiring these utilities should install **`str-merge`** separately.
+
+---
+
 ## [0.0.3] - 2025-01-29
 
 ### Changed
 
 Migrated from `bun` to `yarn`. Now, all command processes use `yarn` instead of `bun`.
+
+---
 
 ## [0.0.2] - 2025-01-29
 

@@ -13,6 +13,7 @@ function logger(message?: unknown, ...log: unknown[]) {
 }
 
 const assignLogger = {
+  json: (...args: unknown[]) => console.log(JSON.stringify(args, (_, value) => value, 2)),
   error: (...args: unknown[]) => {
     if (getEnv() !== 'production') console.log(chalk.red('⛔', ...args));
   },

@@ -1,89 +1,58 @@
-type ocxKey = { [key: string]: any };
+import { clean } from './clean.ts';
 
-/**
- * Represents an accumulated result object combining properties.
- *
- * @template T - A generic type extending ocxKey.
- */
+/** A type alias representing an object with string keys and values of any type. */
+export type ocxKey = { [key: string]: any };
+
+/** A generic type that extends `T` with `ocxKey`, allowing `T` to have arbitrary key-value pairs. */
 export type ocxAcc<T> = T & ocxKey;
-
 /**
- * Represents possible input types for the `ocx` function.
- * Includes objects, arrays, nested arrays, primitive types, or functions returning these types.
- */
+ * A flexible mapping type that can be an:
+ * - plain object (`ocxKey`)
+ * - array of objects (`ocxKey[]`)
+ * - recursive mapping (`ocxMap[]`)
+ * - primitive value (`string`, `number`, `null`, `boolean`, `undefined`)
+ * - function that takes an optional object (`ocxKey`) and returns an `ocxMap`. */
 export type ocxMap = ocxKey | ocxKey[] | ocxMap[] | string | number | null | boolean | undefined | ((key?: ocxKey) => ocxMap);
 
-/**
- * Represents the generic object types that can be passed to the `ocx` function.
- * Includes types extending `ocxKey`, as well as nested input types.
- */
+/** An object that can be processed by `ocx`. */
 export type ocxObj<T> = T | ocxMap | ocxAcc<T>;
 
-/**
- * Determines whether a value is a plain object.
- *
- * @param value - The value to check.
- * @returns True if the value is a plain object, otherwise false.
- */
 function isPlainObject(value: unknown): value is ocxKey {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 /**
- * Recursively removes properties with falsy values (except `0`) from an object.
+ * Merges multiple objects deeply, handling arrays and functions gracefully.
  *
- * @template T - A generic type extending ocxKey.
- * @param obj - The object to clean.
- * @returns A new object without falsy properties.
- */
-export function cleanFalsy<T extends ocxKey>(obj: T): T {
-  return Object.entries(obj).reduce<T>((acc, [key, value]) => {
-    if (value || value === 0) {
-      (acc as ocxKey)[key] = isPlainObject(value) ? cleanFalsy(value) : value;
-    }
-    return acc;
-  }, {} as T);
-}
-
-/**
- * The base implementation of the `ocx` function.
- * Combines various input types into a single object with deep merging capabilities.
- *
- * @template T - A generic type extending ocxKey.
- * @param obj - A list of objects, arrays, functions, or values to combine.
- * @returns The accumulated object after merging all inputs.
+ * @template T - The base object type.
+ * @param obj - One or more objects to merge.
+ * @returns The deeply merged object.
  */
 function baseOcx<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T> {
-  const seen = new WeakSet<object>(); // To track objects that have been visited
+  const seen = new WeakMap<object, object>(); // Use WeakMap to store processed objects
 
-  return obj.reduce<ocxAcc<T>>((acc, input) => {
-    if (!input || (typeof input === 'object' && seen.has(input))) return acc;
-    if (typeof input === 'object' && input !== null) {
-      seen.add(input);
+  function merge<T extends ocxKey>(acc: ocxAcc<T>, input: ocxObj<T>): ocxAcc<T> {
+    if (!input) return acc;
+
+    if (isPlainObject(input)) {
+      if (seen.has(input)) return seen.get(input) as ocxAcc<T>; // If there is one, use previous result.
+      const newAcc = { ...acc }; // Copy acc so as not to change direct references
+      seen.set(input, newAcc); // Mark objects as processed
+      acc = newAcc; // Use copied version
     }
 
     if (Array.isArray(input)) return { ...acc, ...baseOcx(...input) };
 
     if (typeof input === 'function') {
       const result = input(acc);
-      if (isPlainObject(result)) {
-        for (const [key, value] of Object.entries(result)) {
-          if (isPlainObject(value) && isPlainObject(acc[key])) {
-            (acc as ocxKey)[key] = baseOcx(acc[key], value); // Deep merge if property already exists
-          } else {
-            (acc as ocxKey)[key] = value;
-          }
-        }
-        return acc;
-      }
-      return { ...acc, ...baseOcx(result) };
+      return isPlainObject(result) ? merge(acc, result) : { ...acc, ...baseOcx(result) };
     }
 
     if (isPlainObject(input)) {
       Reflect.ownKeys(input).forEach(key => {
         const value = (input as any)[key];
         if (isPlainObject(value) && isPlainObject(acc[key as keyof T])) {
-          acc[key as keyof T] = baseOcx(acc[key as keyof T], value);
+          acc[key as keyof T] = merge(acc[key as keyof T], value);
         } else {
           acc[key as keyof T] = value;
         }
@@ -92,47 +61,84 @@ function baseOcx<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T> {
     }
 
     return acc;
-  }, {} as ocxAcc<T>);
+  }
+
+  return obj.reduce<ocxAcc<T>>((acc, input) => merge(acc, input), {} as ocxAcc<T>);
 }
 
 /**
- * A utility function to combine objects with deep merging and remove falsy values.
+ * Merges multiple objects deeply, handling arrays and functions gracefully **without overwriting**.
  *
- * @template T - A generic type extending ocxKey.
- * @param obj - A list of objects, arrays, functions, or values to combine.
- * @returns A cleaned object with all falsy values removed.
+ * @template T - The base object type.
+ * @param obj - One or more objects to merge.
+ * @returns The deeply merged object **without overwriting** the value at the first key, only change the value if it does not exist.
  */
-function clean<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T> {
-  return cleanFalsy(baseOcx(...obj));
+function preserveRoot<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T> {
+  const seen = new WeakMap<object, object>();
+
+  function merge<T extends ocxKey>(acc: ocxAcc<T>, input: ocxObj<T>): ocxAcc<T> {
+    if (!input) return acc;
+
+    if (isPlainObject(input)) {
+      if (seen.has(input)) return seen.get(input) as ocxAcc<T>;
+      const newAcc = { ...acc };
+      seen.set(input, newAcc);
+      acc = newAcc;
+    }
+
+    if (Array.isArray(input)) return { ...acc, ...preserveRoot(...input) };
+
+    if (typeof input === 'function') {
+      const result = input(acc);
+      return isPlainObject(result) ? merge(acc, result) : { ...acc, ...preserveRoot(result) };
+    }
+
+    if (isPlainObject(input)) {
+      Reflect.ownKeys(input).forEach(key => {
+        const value = (input as any)[key];
+        if (acc[key as keyof T] === undefined) {
+          acc[key as keyof T] = value; // Only change the value if it does not exist
+        } else if (isPlainObject(value) && isPlainObject(acc[key as keyof T])) {
+          acc[key as keyof T] = merge(acc[key as keyof T], value);
+        }
+      });
+      return acc;
+    }
+
+    return acc;
+  }
+
+  return obj.reduce<ocxAcc<T>>((acc, input) => merge(acc, input), {} as ocxAcc<T>);
 }
 
-/**
- * Interface representing the `ocx` function with `clean` as a nested utility.
- */
 interface ocxFn {
+  /**
+   * Merges multiple objects and removes falsy values by default.
+   *
+   * @template T - The base object type.
+   * @param obj - One or more objects to merge.
+   * @returns The deeply merged object with falsy values removed.
+   */
   <T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T>;
-  clean: typeof clean;
+  /**
+   * A version of `ocx` that performs deep merging **without** removing falsy values.
+   */
+  raw: typeof baseOcx;
+  /**
+   * A version of `ocx` that performs a deep join **without overwriting** the value at the first key, only change the value if it does not exist.
+   */
+  preserve: typeof preserveRoot;
 }
 
 /**
- * Recursively merge objects with support for arrays, dynamic functions, and falsy properties into a single object.
+ * Recursively merge objects with support for arrays, dynamic functions, and non falsy properties into a single object.
  *
- * Provides a `.clean()` method to remove falsy values from the result.
- *
- * @example
- * const result = ocx(
- *   { a: 1, b: { b1: 'b1' } },
- *   { b: { b2: 'b2' }, c: null },
- *   key => key?.b && { d: 'dynamic' }
- * );
- * console.log(result);
- * // Output: { a: 1, b: { b1: 'b1', b2: 'b2' }, d: 'dynamic' }
- *
- * @example
- * const cleaned = ocx.clean({ a: 1, b: { b1: 'b1' }, c: null, d: undefined });
- * console.log(cleaned);
- * // Output: { a: 1, b: { b1: 'b1' } }
+ * Provides a chaining:
+ * - {@link baseOcx raw} method to **get falsy values** from the result.
+ * - {@link preserveRoot preserve} method to join **without overwriting** first value.
+ * @see {@link https://ilkhoeri.github.io/cretex/?id=ocx Docs}
  */
-export const ocx = baseOcx as ocxFn;
+export const ocx: ocxFn = (...obj) => clean(baseOcx(...obj), [0]);
 
-ocx.clean = clean;
+ocx.raw = baseOcx as typeof baseOcx;
+ocx.preserve = preserveRoot as typeof preserveRoot;

@@ -1,6 +1,6 @@
 {
   "name": "cretex",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Ilham Khoeri <ilkhoeri@gmail.com> (https://github.com/ilkhoeri)",
   "repository": {
     "type": "git",
@@ -71,22 +71,19 @@
       "url": "https://saweria.co/ilkhoeri"
     }
   ],
-  "homepage": "https://github.com/ilkhoeri/cretex#readme",
+  "homepage": "https://ilkhoeri.github.io/cretex",
   "keywords": [
-    "string",
-    "variant",
-    "class-variant",
+    "data-combination",
     "object-variant",
+    "class-variant",
+    "variant",
     "classes",
-    "className",
-    "classNames",
-    "classList",
-    "twMerge",
-    "clsx",
-    "cva",
-    "css",
-    "react",
-    "size",
+    "string-merging",
+    "string",
+    "mergedeep",
+    "merged",
+    "variants",
+    "dynamic",
     "converter"
   ],
   "license": "MIT",
@@ -125,6 +122,7 @@
     "test:deno": "cd deno && deno test",
     "prepare:test": "husky .husky/pre-publish \"yarn test\"",
     "prepare": "husky",
+    "prepublishOnly": "npm run test && npm run build && npm run build:deno",
     "jsr:publish": "cd deno/lib && npx jsr publish",
     "lint": "eslint src --cache",
     "format": "prettier src",

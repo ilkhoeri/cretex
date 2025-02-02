@@ -92,12 +92,16 @@ writeFileSync(join(denoLibRoot, 'mod.ts'), `export * from "./index.ts";\nexport 
 });
 
 // **Write deno.json file**
-const denoJsonContent = JSON.stringify({
-  name: "@cretex/dynamic",
-  version: packageVersion,
-  license: "MIT",
-  exports: "./mod.ts"
-}, null, 2); // Indentasi 2 spasi untuk format yang rapi
+const denoJsonContent = JSON.stringify(
+  {
+    name: '@cretex/dynamic',
+    version: packageVersion,
+    license: 'MIT',
+    exports: './mod.ts'
+  },
+  null,
+  2
+); // Indentasi 2 spasi untuk format yang rapi
 
 writeFileSync(join(denoLibRoot, 'deno.json'), denoJsonContent, { encoding: 'utf-8' });
 
@@ -107,9 +111,9 @@ const licenseDest = join(denoLibRoot, 'LICENSE');
 
 try {
   copyFileSync(licensePath, licenseDest);
-  console.log("LICENSE file copied successfully.");
+  console.log('LICENSE file copied successfully.');
 } catch (error) {
-  console.warn("LICENSE file not found. Skipping copy.");
+  console.warn('LICENSE file not found. Skipping copy.');
 }
 
-console.log('File index.ts, deno.json, dan LICENSE berhasil diperbarui!');
+console.log('Index.ts, deno.json, and LICENSE files successfully updated!');
