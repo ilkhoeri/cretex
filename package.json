@@ -125,7 +125,7 @@
     "prepare:test": "husky .husky/pre-publish \"yarn test\"",
     "prepare": "husky",
     "prepublishOnly": "npm run test && npm run build && npm run build:deno",
-    "jsr:publish": "cd deno/lib && npx jsr publish",
+    "jsr:publish": "yarn prettier && cd deno/lib && npx jsr publish",
     "lint": "eslint src --cache",
     "format": "prettier src",
     "typecheck": "tsc --noEmit",
