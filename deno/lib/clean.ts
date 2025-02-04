@@ -13,7 +13,7 @@ function isPlainObject(value: unknown): value is objKey {
  * @param seen - To detect cyclic references (default: `new WeakSet<object>()`).
  * @returns A new object without the falsy values.
  */
-export function clean<T extends objKey>(obj: T, exclude: unknown[] = [], seen = new WeakSet<object>()): T {
+export function clean<T extends objKey>(obj: T, exclude: unknown[] = [], seen: WeakSet<object> = new WeakSet<object>()): T {
   const excludeSet = new Set(exclude);
 
   if (seen.has(obj)) return obj; // Avoid infinite loops

@@ -10,15 +10,7 @@ type Undefined<T> = T extends undefined ? never : T;
 /**
  * @type {cvxProps<T>} - Extracts the properties of the first argument of a given function type `T`, excluding `ExcludeKeys`.
  *
- * @example
- * const classes = cvx({
- *  variants: {
- *    selector: { header: "", content: "", footer: "" }
- *  }
- * });
- *
- * type Selector = NonNullable<cvxProps<typeof classes>["selector"]>;
- * // Returns: type Selector = "header" | "content" | "footer";
+ * @see {@link https://ilkhoeri.github.io/cretex/cvx#cvxprops Docs}
  */
 export type cvxProps<T extends (...keys: any) => any> = Omit<Undefined<Parameters<T>[0]>, ExcludeKeys>;
 
@@ -59,21 +51,7 @@ export interface cvxRecord<T extends cvxKeys> {
  * @returns {(result?: cvxResult<T>) => string} - A function that takes a `result` object to override default variants
  * and generates a class name string.
  *
- * @example
- * const variantConfig = cvx({
- *   assign: 'foo', // optional
- *   variants: {
- *     variant: { primary: 'bar', secondary: 'baz' },
- *     size: { sm: 'small', lg: 'large' }
- *   },
- *   defaultVariants: { variant: 'primary', size: 'sm' } // optional
- * });
- *
- * variantConfig();
- * // Returns: "foo bar small"
- *
- * variantConfig({ variant: 'secondary', size: 'lg' });
- * // Returns: "foo baz large"
+ * @see {@link https://ilkhoeri.github.io/cretex/cvx Docs}
  */
 export function cvx<T extends cvxKeys>(keys: cvxRecord<T>): (result?: cvxResult<T>) => string {
   return (result: cvxResult<T> = {}) => {

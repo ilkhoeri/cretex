@@ -97,9 +97,9 @@
     ]
   },
   "scripts": {
-    "prettier:check": "prettier --check src deno *.md --no-error-on-unmatched-pattern",
     "prettier:fix": "prettier --write src deno *.md --ignore-unknown --no-error-on-unmatched-pattern",
-    "prettier": "yarn prettier:check && yarn prettier:fix",
+    "prettier:check": "prettier --check src deno *.md --no-error-on-unmatched-pattern",
+    "prettier": "yarn prettier:fix && yarn prettier:check",
     "lint:check": "eslint --cache src",
     "lint:fix": "eslint --cache --fix src",
     "check": "yarn lint:check && yarn prettier:check",

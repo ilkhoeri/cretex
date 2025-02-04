@@ -17,25 +17,7 @@ export type cnxValues = cnxMap | cnxMap[] | cnxValues[] | string | number | null
  *
  * @returns {string} A concatenated string of values derived from the inputs.
  *
- * @example
- * // Simple usage with strings and numbers
- * cnx('foo', 'bar', 42);
- * // Returns: "foo bar 42"
- *
- * @example
- * // Using objects with truthy and falsy values
- * cnx({ active: true, disabled: false });
- * // Returns: "active"
- *
- * @example
- * // Using functions as inputs
- * cnx(() => 'dynamic-class');
- * // Returns: "dynamic-class"
- *
- * @example
- * // Complex combination
- * cnx('header', { sticky: true }, [null, 'shadow'], () => ['dynamic', { visible: true }]);
- * // Returns: "header sticky shadow dynamic visible"
+ * @see {@link https://ilkhoeri.github.io/cretex/cnx Docs}
  */
 export function cnx(...inputs: cnxValues[]): string {
   const merged = inputs.reduce<string[]>((acc, input) => {
