@@ -1,15 +1,11 @@
-/**
- *@type {ExcludeKeys} - Keys to exclude from variant configurations. Currently includes `'defaultVariants'` and `''`.
- */
+/** @type {ExcludeKeys} - Keys to exclude from variant configurations. Currently includes `'defaultVariants'` and `''`. */
 type ExcludeKeys = 'defaultVariants' | '';
-/**
- * @type {Undefined<T>} - Utility type to exclude `undefined` from a given type `T`.
- */
+/** @type {Undefined<T>} - Utility type to exclude `undefined` from a given type `T`. */
 type Undefined<T> = T extends undefined ? never : T;
 
 /**
  * @type {cvxProps<T>} - Extracts the properties of the first argument of a given function type `T`, excluding `ExcludeKeys`.
- *
+ * @example
  * @see {@link https://ilkhoeri.github.io/cretex/cvx#cvxprops Docs}
  */
 export type cvxProps<T extends (...keys: any) => any> = Omit<Undefined<Parameters<T>[0]>, ExcludeKeys>;
@@ -40,17 +36,14 @@ export interface cvxRecord<T extends cvxKeys> {
  * A utility function for managing values based on variant configurations.
  *
  * This function simplifies the handling of value generation with support for variants, default values, and dynamic overrides.
- *
  * @template T - The type of variant keys and their possible values.
- *
  * @param {cvxRecord<T>} keys - The configuration object containing:
  *   - `assign` (optional): A base value to always include.
  *   - `variants`: An object defining variant keys and their possible values as classes.
  *   - `defaultVariants` (optional): Default variant values for each variant key.
- *
  * @returns {(result?: cvxResult<T>) => string} - A function that takes a `result` object to override default variants
  * and generates a class name string.
- *
+ * @example
  * @see {@link https://ilkhoeri.github.io/cretex/cvx Docs}
  */
 export function cvx<T extends cvxKeys>(keys: cvxRecord<T>): (result?: cvxResult<T>) => string {

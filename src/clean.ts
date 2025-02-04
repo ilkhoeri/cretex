@@ -6,12 +6,13 @@ function isPlainObject(value: unknown): value is objKey {
 
 /**
  * Recursively removes falsy values from an object, except those specified in `exclude`.
- *
  * @template T - The object type.
  * @param obj - The object to clean.
  * @param exclude - An array of values to be preserved even if they are falsy (default: `[]`).
  * @param seen - To detect cyclic references (default: `new WeakSet<object>()`).
  * @returns A new object without the falsy values.
+ * @example
+ * @see {@link https://ilkhoeri.github.io/cretex/clean Docs}
  */
 export function clean<T extends objKey>(obj: T, exclude: unknown[] = [], seen: WeakSet<object> = new WeakSet<object>()): T {
   const excludeSet = new Set(exclude);

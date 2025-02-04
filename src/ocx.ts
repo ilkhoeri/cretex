@@ -23,7 +23,6 @@ function isPlainObject(value: unknown): value is ocxKey {
 
 /**
  * Merges multiple objects deeply, handling arrays and functions gracefully.
- *
  * @template T - The base object type.
  * @param obj - One or more objects to merge.
  * @returns The deeply merged object.
@@ -68,7 +67,6 @@ function baseOcx<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T> {
 
 /**
  * Merges multiple objects deeply, handling arrays and functions gracefully **without overwriting**.
- *
  * @template T - The base object type.
  * @param obj - One or more objects to merge.
  * @returns The deeply merged object **without overwriting** the value at the first key, only change the value if it does not exist.
@@ -114,19 +112,14 @@ function preserveRoot<T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T> {
 interface ocxFn {
   /**
    * Merges multiple objects and removes falsy values by default.
-   *
    * @template T - The base object type.
    * @param obj - One or more objects to merge.
    * @returns The deeply merged object with falsy values removed.
    */
   <T extends ocxKey>(...obj: ocxObj<T>[]): ocxAcc<T>;
-  /**
-   * A version of `ocx` that performs deep merging **without** removing falsy values.
-   */
+  /** A version of `ocx` that performs deep merging **without** removing falsy values. */
   raw: typeof baseOcx;
-  /**
-   * A version of `ocx` that performs a deep join **without overwriting** the value at the first key, only change the value if it does not exist.
-   */
+  /** A version of `ocx` that performs a deep join **without overwriting** the value at the first key, only change the value if it does not exist. */
   preserve: typeof preserveRoot;
 }
 
@@ -136,6 +129,7 @@ interface ocxFn {
  * Provides a chaining:
  * - {@link baseOcx raw} method to **get falsy values** from the result.
  * - {@link preserveRoot preserve} method to join **without overwriting** first value.
+ * @example
  * @see {@link https://ilkhoeri.github.io/cretex/?id=ocx Docs}
  */
 export const ocx: ocxFn = (...obj) => clean(baseOcx(...obj), [0]);

@@ -1,9 +1,35 @@
-# Changelog
+# CHANGELOG
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+Be sure to always refer to the latest documentation for the most up-to-date usage guidelines.
+
+---
+
+## [0.0.45] - 2025-02-04
+
+### **Enhancements**
+
+- **Explicit Type on `clean()`**
+  Added explicit type annotation for the `seen` parameter in `clean()`, ensuring better type safety and improving developer experience.
+
+### **Documentation**
+
+- **New Documentation Page**
+  Introduced a dedicated [**documentation page**](https://ilkhoeri.github.io/cretex/) for improved readability and accessibility.
+- **Centralized Examples & Usage**
+  All code examples and usage guidelines are now directed to the [**documentation page**](https://ilkhoeri.github.io/cretex/), ensuring consistency and ease of reference.
+- **Refined Symbol Documentation**
+  Simplified and enhanced symbol documentation for better clarity and maintainability.
+
+### **Summary**
+
+This release focuses on improving type safety, refining documentation, and ensuring a more structured approach to learning and utilizing the library.
+
+---
 
 ## [0.0.4] - 2025-01-31
 
