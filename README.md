@@ -22,7 +22,7 @@
 [![DENO](https://img.shields.io/npm/v/cretex.svg?logo=deno&logoColor=white&logoSize=auto&label=%20deno&labelColor=blue&color=white)](https://deno.land/x/cretex)
 [![jsdelivr](https://img.shields.io/npm/v/cretex.svg?logo=jsdelivr&label=jsdelivr&color=fdC72e)](https://www.jsdelivr.com/package/npm/cretex)
 
-## **Packages**
+## **Bundles**
 
 [![min](https://badgen.net/bundlephobia/min/cretex)](https://bundlephobia.com/package/cretex)
 [![minzip](https://badgen.net/bundlephobia/minzip/cretex)](https://bundlephobia.com/package/cretex)
