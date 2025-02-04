@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="/cretex-logo.svg" width="200px" align="center" alt="Cretex logo" />
+  <img src="logo.svg" width="200px" align="center" alt="Cretex logo" />
   <h1 align="center">Cretex</h1>
 </div>
 

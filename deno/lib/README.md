@@ -1156,12 +1156,7 @@ const data = [
 ];
 
 const serialized = data.map(item =>
-  ocx(
-    item,
-    { isAdult: item.details.age >= 18 },
-    key => key?.active && { status: 'online' },
-    !item.active && { status: 'offline', inactiveSince: '2023-12-01' }
-  )
+  ocx(item, { isAdult: item.details.age >= 18 }, key => key?.active && { status: 'online' }, !item.active && { status: 'offline', inactiveSince: '2023-12-01' })
 );
 
 console.log(serialized);
