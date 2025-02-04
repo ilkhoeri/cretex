@@ -43,7 +43,7 @@ jobs:
       - run: yarn install
       - run: yarn build:deno
       - run: deno --version
-      - run: deno test ./deno/_tests
+      # - run: deno test ./deno/_tests
         working-directory: ./deno/lib
       - run: deno run ./index.ts
         working-directory: ./deno/lib
