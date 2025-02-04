@@ -57,3 +57,5 @@ npmrc
 .npmrc
 index.html
 ./index.html
+logo.svg
+./logo.svg
